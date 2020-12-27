@@ -32,7 +32,7 @@ TEST(Storage, test_single) {
   ASSERT_EQ(storage.get(kKey), kValue);
 
   const auto deleted_count = storage.del({kKey, "2", "3"});
+  ASSERT_EQ(deleted_count, 1);
   ASSERT_EQ(storage.size(), 0);
   ASSERT_EQ(storage.get(kKey), std::nullopt);
-  ASSERT_EQ(deleted_count, 1);
 }

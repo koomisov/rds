@@ -15,7 +15,7 @@ endif()
 
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
-find_package(Boost 1.68 REQUIRED COMPONENTS thread)
+find_package(Boost 1.67)
 
 if(${TEST_MODE})
   add_executable(

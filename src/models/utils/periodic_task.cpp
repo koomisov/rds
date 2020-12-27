@@ -17,7 +17,7 @@ PeriodicTask::PeriodicTask(const std::chrono::milliseconds period,
 
 PeriodicTask::~PeriodicTask() {
   is_running_ = false;
-  thread_.detach();
+  thread_.join();
 }
 
 }  // namespace utils

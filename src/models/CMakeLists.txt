@@ -13,7 +13,7 @@ endif()
 
 set(Boost_USE_STATIC_LIBS ON)
 
-find_package(Boost 1.68 REQUIRED COMPONENTS thread)
+find_package(Boost 1.67)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Werror)
