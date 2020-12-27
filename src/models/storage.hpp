@@ -16,7 +16,8 @@ class Storage {
   explicit Storage();
   virtual ~Storage() = default;
 
-  // service method for garbage collector
+  std::size_t size() const;
+
   std::optional<models::Value> get_by_bucket(const std::size_t bucket) const;
 
   std::optional<models::Value> get(const std::string& key) const;

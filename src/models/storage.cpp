@@ -4,6 +4,8 @@ namespace models {
 
 Storage::Storage() { storage_.max_load_factor(1.f); }
 
+std::size_t Storage::size() const { return storage_.size(); }
+
 int Storage::del(const std::vector<std::string>& keys) {
   int deleted_count = 0;
   std::unique_lock<std::shared_mutex> lock(mutex_);

@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <functional>
-#include <iostream>  // delete me
 
 namespace models {
 
@@ -43,9 +42,7 @@ void GarbageCollector::callback() {
     not_expired_buckets.push_back(bucket);
   }
 
-  const auto deleted_count =
-      storage_.del_by_buckets(expired_buckets);  // del me
-  std::cout << "deleted count in GC: " << deleted_count << std::endl;
+  storage_.del_by_buckets(expired_buckets);
 
   for (const auto bucket : not_expired_buckets) {
     while (!expire_buckets_.push(bucket))

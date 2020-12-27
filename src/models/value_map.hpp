@@ -27,6 +27,8 @@ class ValueMap {
   int expire(const std::string& key, const std::chrono::seconds seconds);
   int ttl(const std::string& key) const;
 
+  std::size_t size() const;
+
  private:
   using clock = std::chrono::system_clock;
 

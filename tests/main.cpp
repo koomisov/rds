@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
-#include "tests.hpp"
+#include "test_garbage_collector.hpp"
+#include "test_storage.hpp"
+#include "test_value_map.hpp"
 
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);

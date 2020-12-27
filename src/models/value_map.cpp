@@ -5,6 +5,8 @@ namespace models {
 ValueMap::ValueMap()
     : expire_buckets_(16ul), garbage_collector_(storage_, expire_buckets_) {}
 
+std::size_t ValueMap::size() const { return storage_.size(); }
+
 std::optional<std::string> ValueMap::get(const std::string& key) const {
   const auto& value_opt = storage_.get(key);
   if (!value_opt) {
