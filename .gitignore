@@ -1,3 +1,11 @@
+build
+cmake_install.cmake
+redis
+Makefile
+CMakeCache.txt
+cmake_install.txt
+.vscode
+CMakeFiles
 # Prerequisites
 *.d
 
