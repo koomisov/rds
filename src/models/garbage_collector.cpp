@@ -1,6 +1,7 @@
 #include "garbage_collector.hpp"
 
 #include <chrono>
+#include <thread>
 #include <functional>
 
 namespace models {
@@ -24,9 +25,10 @@ void GarbageCollector::callback() {
 
   while (!expire_buckets_.empty()) {
     while (!expire_buckets_.pop(front_bucket))
-      ;
+      std::this_thread::yield();
     buckets.push_back(front_bucket);
   }
+
   std::vector<std::size_t> not_expired_buckets;
   std::vector<std::size_t> expired_buckets;
   not_expired_buckets.reserve(buckets.size());
@@ -35,18 +37,22 @@ void GarbageCollector::callback() {
 
   for (const auto bucket : buckets) {
     const auto value = storage_.get_by_bucket(bucket);
-    if (!value || !value->expires_at || *value->expires_at < now) {
-      expired_buckets.push_back(bucket);
+    if (!value || !value->expires_at) {
+      // something goes wrong
       continue;
     }
-    not_expired_buckets.push_back(bucket);
+    if (*value->expires_at < now) {
+      expired_buckets.push_back(bucket);
+    } else {
+      not_expired_buckets.push_back(bucket);
+    }
   }
 
   storage_.del_by_buckets(expired_buckets);
 
   for (const auto bucket : not_expired_buckets) {
     while (!expire_buckets_.push(bucket))
-      ;
+      std::this_thread::yield();
   }
 }
 

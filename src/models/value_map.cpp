@@ -8,14 +8,14 @@ ValueMap::ValueMap()
 std::size_t ValueMap::size() const { return storage_.size(); }
 
 std::optional<std::string> ValueMap::get(const std::string& key) const {
-  const auto& value_opt = storage_.get(key);
-  if (!value_opt) {
+  const auto& value = storage_.get(key);
+  if (!value) {
     return std::nullopt;
   }
-  if (value_opt->expires_at && value_opt->expires_at < clock::now()) {
+  if (value->expires_at && *value->expires_at < clock::now()) {
     return std::nullopt;
   }
-  return value_opt ? std::make_optional(value_opt->value) : std::nullopt;
+  return value->value;
 }
 
 void ValueMap::set(const std::string& key, const std::string& value) {
@@ -28,11 +28,11 @@ int ValueMap::del(const std::vector<std::string>& keys) {
 
 int ValueMap::expire(const std::string& key,
                      const std::chrono::seconds seconds) {
-  const auto& value_opt = storage_.get(key);
-  if (!value_opt) {
+  const auto& value = storage_.get(key);
+  if (!value) {
     return 0;
   }
-  auto bucket = storage_.set(key, value_opt->value, clock::now() + seconds);
+  auto bucket = storage_.set(key, value->value, clock::now() + seconds);
 
   while (!expire_buckets_.push(bucket))
     ;
@@ -41,15 +41,15 @@ int ValueMap::expire(const std::string& key,
 }
 
 int ValueMap::ttl(const std::string& key) const {
-  const auto& value_opt = storage_.get(key);
-  if (!value_opt) {
+  const auto& value = storage_.get(key);
+  if (!value) {
     return -2;
   }
-  if (!value_opt->expires_at || *value_opt->expires_at < clock::now()) {
+  if (!value->expires_at || *value->expires_at < clock::now()) {
     return -1;
   }
   return std::chrono::duration_cast<std::chrono::seconds>(
-             *value_opt->expires_at - clock::now())
+             *value->expires_at - clock::now())
       .count();
 }
 
