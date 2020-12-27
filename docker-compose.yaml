@@ -1,0 +1,8 @@
+version: '3.0'
+
+services:
+  redis:
+    build: .
+    image: redis
+    command: ./redis
+    restart: 'no'
